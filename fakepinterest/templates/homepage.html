@@ -1,11 +1,18 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FakePinterest</title>
-</head>
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
 <body>
     <h1>Hello World</h1>
+
+    {% block formulario %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.email.label }} {{ form.email(size=32) }}<br>
+        {{ form.senha.label }} {{ form.senha(size=32) }}<br>
+        {{ form.botao_submit_login() }}
+    </form>
+    {% endblock formulario %}
 </body>
-</html>
+{% endblock content %}
