@@ -57,9 +57,14 @@ def perfil(id_usuario):
     else:
         return render_template('perfil.html', usuario=Usuario.query.get(int(id_usuario)))
     
-
 @app.route('/logout')
 @login_required
 def logout():
     logout_user() # Por padrão, essa função usa o current_user para saber quem deslogar. Então não precisa passar nada como parâmetro.
     return redirect(url_for('homepage'))
+
+@app.route('/feed')
+@login_required
+def feed():
+    posts = Post.query.order_by(Post.data_criacao.desc()).all()[:10] # Pega os 10 posts mais recentes
+    return render_template('feed.html', posts=posts)

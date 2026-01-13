@@ -1,26 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - FakePinterest</title>
-</head>
-<body>
-    <h1>Perfil do Usuário</h1>
-    <p>Bem-vindo ao seu perfil, {{ usuario.nome }}!</p>
-    <a href="{{ url_for('logout') }}">Sair</a>
-    
-    {% if formPost %}
-    <form method="POST" enctype="multipart/form-data">
-        {{ formPost.csrf_token }}
-        {{ formPost.foto() }}
-        {{ formPost.botao_submit_post() }}
-    </form>
-    {% endif %}
+{% extends 'base.html' %} {% block content %} {% include 'navbar.html' %}
 
-    <h2>Seus Posts</h2>
-    {% for post in usuario.posts %}
-        <img src="{{ url_for('static', filename='fotos_posts/{}'.format(post.imagem)) }}" alt="Post do usuário" width="150">
-    {% endfor %}
-</body>
-</html>
+<h1>Perfil do Usuário</h1>
+<p>Bem-vindo ao seu perfil, {{ usuario.nome }}!</p>
+
+{% if formPost %}
+<form method="POST" enctype="multipart/form-data">
+  {{ formPost.csrf_token }} {{ formPost.foto() }} {{
+  formPost.botao_submit_post() }}
+</form>
+{% endif %}
+
+<h2>Seus Posts</h2>
+{% for post in usuario.posts %}
+<img
+  src="{{ url_for('static', filename='fotos_posts/{}'.format(post.imagem)) }}"
+  alt="Post do usuário"
+  width="150"
+/>
+{% endfor %} {% endblock %}

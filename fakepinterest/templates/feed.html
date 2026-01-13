@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<h1>Feed</h1>
+
+{% for post in posts %}
+    <div class="post">
+        <img src="{{ url_for('static', filename='fotos_posts/{}'.format(post.imagem)) }}" alt="Imagem do post" width="300">
+    </div>
+{% endfor %}
+
+{% endblock %}
