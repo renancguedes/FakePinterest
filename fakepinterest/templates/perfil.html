@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Perfil do Usuário</h1>
-    <p>Bem-vindo ao seu perfil, {{ usuario }}!</p>
-    <a href="{{ url_for('homepage') }}">Voltar para a página inicial</a>
+    <p>Bem-vindo ao seu perfil, {{ usuario.nome }}!</p>
+    <a href="{{ url_for('logout') }}">Sair</a>
 </body>
 </html>

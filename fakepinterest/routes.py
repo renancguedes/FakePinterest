@@ -1,12 +1,17 @@
 from flask import render_template, url_for, redirect
 from fakepinterest import app, db, bcrypt
 from fakepinterest.models import Usuario, Post
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from fakepinterest.forms import FormLogin, FormCriarConta
 
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
     formLogin = FormLogin()
+    if formLogin.validate_on_submit():
+        usuario = Usuario.query.filter_by(email=formLogin.email.data).first()
+        if usuario and bcrypt.check_password_hash(usuario.senha, formLogin.senha.data):
+            login_user(usuario, remember=True)
+            return redirect(url_for('perfil', id_usuario=usuario.id))
     return render_template('homepage.html', form = formLogin)
 
 @app.route('/criarconta', methods=['GET', 'POST'])
@@ -21,10 +26,21 @@ def criarconta():
         db.session.add(usuario)
         db.session.commit()
         login_user(usuario, remember=True) # O remember me mantém logado mesmo após fechar o navegador
-        return redirect(url_for('perfil', usuario=usuario.nome))
+        return redirect(url_for('perfil', id_usuario=usuario.id))
     return render_template('criarconta.html', form=formCriarConta)
 
-@app.route('/perfil/<usuario>', methods=['GET'])
+@app.route('/perfil/<id_usuario>', methods=['GET'])
 @login_required
-def perfil(usuario):
-    return render_template('perfil.html', usuario=usuario)
+def perfil(id_usuario):
+    if int(id_usuario) == int(current_user.id):
+        # Usuario está acessando o próprio perfil
+        return render_template('perfil.html', usuario=current_user)
+    else:
+        return "Tentando acessar perfil de outra pessoa né, engraçadinho?! 0_0", 403
+    
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user() # Por padrão, essa função usa o current_user para saber quem deslogar. Então não precisa passar nada como parâmetro.
+    return redirect(url_for('homepage'))
