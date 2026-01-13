@@ -2,7 +2,9 @@ from flask import render_template, url_for, redirect
 from fakepinterest import app, db, bcrypt
 from fakepinterest.models import Usuario, Post
 from flask_login import login_required, login_user, logout_user, current_user
-from fakepinterest.forms import FormLogin, FormCriarConta
+from fakepinterest.forms import FormLogin, FormCriarConta, FormPost
+import os
+from werkzeug.utils import secure_filename
 
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
@@ -29,14 +31,31 @@ def criarconta():
         return redirect(url_for('perfil', id_usuario=usuario.id))
     return render_template('criarconta.html', form=formCriarConta)
 
-@app.route('/perfil/<id_usuario>', methods=['GET'])
+@app.route('/perfil/<id_usuario>', methods=['GET', 'POST'])
 @login_required
 def perfil(id_usuario):
     if int(id_usuario) == int(current_user.id):
         # Usuario está acessando o próprio perfil
-        return render_template('perfil.html', usuario=current_user)
+        formPost = FormPost()
+        if formPost.validate_on_submit():
+            arquivo = formPost.foto.data
+            nome_seguro = secure_filename(arquivo.filename) # Garante que o nome do arquivo virá sem caracteres estranhos
+            
+            # Salvar o arquivo na pasta de uploads
+            caminho_completo = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                                        app.config['UPLOAD_FOLDER'], 
+                                        nome_seguro
+                                       )
+            arquivo.save(caminho_completo)
+            
+            # Salvar o post no banco de dados
+            post = Post(imagem=nome_seguro, usuario_id=current_user.id)
+            db.session.add(post)
+            db.session.commit()
+            
+        return render_template('perfil.html', usuario=current_user, formPost=formPost)
     else:
-        return "Tentando acessar perfil de outra pessoa né, engraçadinho?! 0_0", 403
+        return render_template('perfil.html', usuario=Usuario.query.get(int(id_usuario)))
     
 
 @app.route('/logout')

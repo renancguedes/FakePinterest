@@ -8,8 +8,12 @@ app = Flask(__name__)
 # Configuração do banco
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 # A secret key está aqui apenas como lembrete. Sei que não é seguro deixá-la exposta aqui.
 app.config["SECRET_KEY"] = "719fd842589c207174e91e4d3bde6ebc"
+
+# Quando um usuário fizer o upload de uma foto, ela será salva nessa pasta
+app.config['UPLOAD_FOLDER'] = 'static/fotos_posts'
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
