@@ -13,7 +13,7 @@ def login():
         usuario = Usuario.query.filter_by(email=formLogin.email.data).first()
         if usuario and bcrypt.check_password_hash(usuario.senha, formLogin.senha.data):
             login_user(usuario, remember=True)
-            return redirect(url_for('perfil', id_usuario=usuario.id))
+            return redirect(url_for('feed'))
     return render_template('login.html', form = formLogin)
 
 @app.route('/criarconta', methods=['GET', 'POST'])
@@ -28,7 +28,7 @@ def criarconta():
         db.session.add(usuario)
         db.session.commit()
         login_user(usuario, remember=True) # O remember me mantém logado mesmo após fechar o navegador
-        return redirect(url_for('perfil', id_usuario=usuario.id))
+        return redirect(url_for('feed'))
     return render_template('criarconta.html', form=formCriarConta)
 
 @app.route('/perfil/<id_usuario>', methods=['GET', 'POST'])
