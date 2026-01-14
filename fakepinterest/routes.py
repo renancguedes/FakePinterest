@@ -53,7 +53,7 @@ def perfil(id_usuario):
             db.session.add(post)
             db.session.commit()
             
-        return render_template('perfil.html', usuario=current_user, formPost=formPost)
+        return render_template('perfil.html', usuario=current_user, form=formPost)
     else:
         return render_template('perfil.html', usuario=Usuario.query.get(int(id_usuario)))
     

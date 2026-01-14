@@ -1,20 +1,49 @@
-{% extends 'base.html' %} {% block content %} {% include 'navbar.html' %}
+{% extends 'base.html' %} {% block content %}
 
-<h1>Perfil do Usuário</h1>
-<p>Bem-vindo ao seu perfil, {{ usuario.nome }}!</p>
+<div class="container">
+  <form class="bloco-add-img" method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <h2>Usuário: {{ usuario.nome }}</h2>
 
-{% if formPost %}
-<form method="POST" enctype="multipart/form-data">
-  {{ formPost.csrf_token }} {{ formPost.foto() }} {{
-  formPost.botao_submit_post() }}
-</form>
-{% endif %}
+    <div class="bloco-arquivo">
+      <label for="foto" class="botao-arquivo">
+        Escolher Arquivo {{ form.foto(class="input-arquivo", id="foto") }}
+      </label>
+      <span id="imagem-arquivo" class=""></span>
+    </div>
 
-<h2>Seus Posts</h2>
-{% for post in usuario.posts %}
-<img
-  src="{{ url_for('static', filename='fotos_posts/{}'.format(post.imagem)) }}"
-  alt="Post do usuário"
-  width="150"
-/>
-{% endfor %} {% endblock %}
+    {{ form.botao_submit_post(class="botao-login") }}
+  </form>
+</div>
+
+<div class="conteudo">
+  {% if usuario.posts %} {% for post in usuario.posts %}
+  <div class="bloco-imagem">
+    <img
+      src="{{ url_for('static', filename='fotos_posts/{}'.format(post.imagem)) }}"
+      alt="{{ post.imagem }}"
+    />
+  </div>
+  {% endfor %} {% else %}
+  <div class="feed-vazio" style="grid-column: 1 / -1; place-self: center; margin: 24px auto;">
+    <h2 class="feed-vazio__titulo">Você ainda não postou nada</h2>
+    <p class="feed-vazio__texto">
+      Escolha um arquivo e clique em "Postar" para publicar sua primeira foto.
+    </p>
+  </div>
+  {% endif %}
+
+  <script>
+    let input = document.getElementById("foto");
+    let imagemArquivo = document.getElementById("imagem-arquivo");
+
+    input.addEventListener("change", () => {
+      let inputImagem = document.querySelector("input[type=file]").files[0];
+
+      imagemArquivo.classList.add("visivel");
+      imagemArquivo.innerText = inputImagem.name;
+    });
+  </script>
+
+  {% endblock %}
+</div>
