@@ -1,14 +1,45 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
-{% include 'navbar.html' %}
+<div class="conteudo">
+  <div class="bloco-imagem">
+    <img
+      src="{{ url_for('static', filename='fotos_site/pinterest-1.jpg') }}"
+      alt="Pinterest 1"
+    />
+  </div>
+  <div class="bloco-imagem">
+    <img
+      src="{{ url_for('static', filename='fotos_site/pinterest-2.jpg') }}"
+      alt="Pinterest 2"
+    />
+  </div>
+  <div class="bloco-imagem">
+    <img
+      src="{{ url_for('static', filename='fotos_site/pinterest-3.jpg') }}"
+      alt="Pinterest 3"
+    />
+  </div>
 
-<h1>Feed</h1>
-
-{% for post in posts %}
-    <div class="post">
-        <img src="{{ url_for('static', filename='fotos_posts/{}'.format(post.imagem)) }}" alt="Imagem do post" width="300">
-    </div>
-{% endfor %}
-
-{% endblock %}
+  {% if posts %} {% for post in posts %}
+  <div class="bloco-imagem">
+    <img
+      src="{{ url_for('static', filename='fotos_posts/{}'.format(post.imagem)) }}"
+      alt="{{ post.imagem }}"
+      width="300"
+    />
+  </div>
+  {% endfor %} {% else %}
+  <div class="feed-vazio">
+    <h2 class="feed-vazio__titulo">Seu feed ainda está vazio</h2>
+    <p class="feed-vazio__texto">
+      Acesse o seu perfil para adicionar novos posts.
+    </p>
+    <a
+      class="feed-vazio__acao"
+      href="{{ url_for('perfil', id_usuario=current_user.id) }}"
+      >Ir para o perfil</a
+    >
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}
