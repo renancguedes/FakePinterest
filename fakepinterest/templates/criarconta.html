@@ -1,7 +1,5 @@
-{% extends 'login.html' %} 
-
-{% block title %}FakePinterest - Criar Conta{%endblock %} 
-{% block formulario %}
+{% extends 'login.html' %} {% block title %}FakePinterest - Criar
+Conta{%endblock %} {% block formulario %}
 <form method="POST" class="popup">
   {{ form.csrf_token }}
 
@@ -18,24 +16,39 @@
   <h2>Criar Conta</h2>
 
   <div class="div-input">
-    {{ form.email.label(class="label") }} {{ form.email(class="input", placeholder="E-mail") }}
+    {{ form.email.label(class="label") }} {% if form.email.errors %} {% for erro
+    in form.email.errors %}
+    <p style="color: red">{{ erro }}</p>
+    {% endfor %} {% endif %} {{ form.email(class="input", placeholder="E-mail")
+    }}
   </div>
 
   <div class="div-input">
-    {{ form.username.label(class="label") }} {{ form.username(class="input", placeholder="Nome de usuário") }}
+    {{ form.username.label(class="label") }} {{ form.username(class="input",
+    placeholder="Nome de usuário") }}
   </div>
 
   <div class="div-input">
-    {{ form.senha.label(class="label") }} {{ form.senha(class="input", placeholder="Senha") }}
+    {{ form.senha.label(class="label") }} {% if form.senha.errors %} {% for erro
+    in form.senha.errors %}
+    <p style="color: red">{{ erro }}</p>
+    {% endfor %} {% endif %} {{ form.senha(class="input",
+    placeholder="Senha") }}
   </div>
 
   <div class="div-input">
-    {{ form.confirmar_senha.label(class="label") }} {{ form.confirmar_senha(class="input", placeholder="Confirmar Senha") }}
+    {{ form.confirmar_senha.label(class="label") }} {% if form.confirmar_senha.errors %} {% for erro
+    in form.confirmar_senha.errors %}
+    <p style="color: red">{{ erro }}</p>
+    {% endfor %} {% endif %} {{
+    form.confirmar_senha(class="input", placeholder="Confirmar Senha") }}
   </div>
 
   <div class="div-botao">
     {{ form.botao_submit_criarconta(class="botao-login") }}
-    <a href="{{ url_for('login') }}" class="link-criarconta">Não tem uma conta? Crie aqui</a>
+    <a href="{{ url_for('login') }}" class="link-criarconta"
+      >Não tem uma conta? Crie aqui</a
+    >
   </div>
 </form>
 {% endblock %}

@@ -7,6 +7,13 @@ class FormLogin(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', validators=[DataRequired()])
     botao_submit_login = SubmitField('Fazer Login')
+    
+    # Lembrete de Renan:
+    # Obrigatoriamente, o nome do método deve seguir o padrão validate_<nome_do_campo>
+    def validate_email(self, email):
+        usuario = Usuario.query.filter_by(email=email.data).first()
+        if not usuario:
+            raise ValidationError('Usuário não cadastrado. Crie uma conta para continuar.')
 
 class FormCriarConta(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()])
@@ -15,12 +22,10 @@ class FormCriarConta(FlaskForm):
     confirmar_senha = PasswordField('Confirmar Senha', validators=[DataRequired(), EqualTo('senha', message='As senhas devem coincidir.')])
     botao_submit_criarconta = SubmitField('Criar Conta')
     
-    # Lembrete de Renan:
-    # Obrigatoriamente, o nome do método deve seguir o padrão validate_<nome_do_campo>
     def validate_email(self, email):
         usuario = Usuario.query.filter_by(email=email.data).first()
         if usuario:
-            raise ValidationError('E-mail já cadastrado. Utilize outro e-mail.')
+            raise ValidationError('E-mail já cadastrado. Faça login para continuar.')
         
 class FormPost(FlaskForm):
     foto = FileField('Foto', validators=[DataRequired()])
