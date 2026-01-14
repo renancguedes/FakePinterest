@@ -7,14 +7,14 @@ import os
 from werkzeug.utils import secure_filename
 
 @app.route('/', methods=['GET', 'POST'])
-def homepage():
+def login():
     formLogin = FormLogin()
     if formLogin.validate_on_submit():
         usuario = Usuario.query.filter_by(email=formLogin.email.data).first()
         if usuario and bcrypt.check_password_hash(usuario.senha, formLogin.senha.data):
             login_user(usuario, remember=True)
             return redirect(url_for('perfil', id_usuario=usuario.id))
-    return render_template('homepage.html', form = formLogin)
+    return render_template('login.html', form = formLogin)
 
 @app.route('/criarconta', methods=['GET', 'POST'])
 def criarconta():
@@ -61,7 +61,7 @@ def perfil(id_usuario):
 @login_required
 def logout():
     logout_user() # Por padrão, essa função usa o current_user para saber quem deslogar. Então não precisa passar nada como parâmetro.
-    return redirect(url_for('homepage'))
+    return redirect(url_for('login'))
 
 @app.route('/feed')
 @login_required
