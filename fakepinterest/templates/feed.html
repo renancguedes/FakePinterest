@@ -2,6 +2,7 @@
 
 <div class="conteudo">
   <div class="bloco-imagem">
+    <a href=""></a>
     <img
       src="{{ url_for('static', filename='fotos_site/pinterest-1.jpg') }}"
       alt="Pinterest 1"
@@ -19,20 +20,28 @@
       alt="Pinterest 3"
     />
   </div>
-
-  {% if posts %} {% for post in posts %}
   <div class="bloco-imagem">
+    <img
+      src="{{ url_for('static', filename='fotos_site/pinterest-4.jpg') }}"
+      alt="Pinterest 4"
+    />
+  </div>
+
+  {% for post in posts %}
+  <div class="bloco-imagem">
+    <a href="{{ url_for('perfil', id_usuario=post.usuario_id) }}">
     <img
       src="{{ url_for('static', filename='fotos_posts/{}'.format(post.imagem)) }}"
       alt="{{ post.imagem }}"
       width="300"
     />
+    </a>
   </div>
-  {% endfor %} {% else %}
+  {% endfor %}
   <div class="feed-vazio">
-    <h2 class="feed-vazio__titulo">Seu feed ainda está vazio</h2>
+    <h2 class="feed-vazio__titulo">Quer adicionar mais fotos?</h2>
     <p class="feed-vazio__texto">
-      Acesse o seu perfil para adicionar novos posts.
+      Acesse o seu perfil clicando no botão abaixo.
     </p>
     <a
       class="feed-vazio__acao"
@@ -40,6 +49,5 @@
       >Ir para o perfil</a
     >
   </div>
-  {% endif %}
 </div>
 {% endblock content %}
