@@ -4,35 +4,24 @@ Projeto web inspirado no Pinterest, desenvolvido com **Flask** para praticar aut
 
 ---
 
-## Demo
+## Funcionalidades
 
-- **Login/Cadastro**
-- **Feed** com os 10 posts mais recentes
-- **Perfil** do usuário com upload de fotos
+- Autenticação de usuário (login/Cadastro)
+- Criação de conta com senha criptografada (bcrypt)
+- Feed com os 10 posts mais recentes (de todos os usuários)
+- Link para o perfil do autor ao clicar na postagem
+- Página de perfil do usuário com upload de fotos
 
 ### Screenshots
 
-> Substitua os arquivos abaixo pelas suas imagens.
+- **Tela de Login**
+    - ![Tela de Login](https://github.com/renancguedes/FakePinterest/blob/main/docs/login.png)
 
-- **Tela de login**
-    - ![Tela de Login](docs/img/login.png)
+- **Tela de Feed**
+    - ![Feed](https://github.com/renancguedes/FakePinterest/blob/main/docs/feed.png)
 
-- **Tela de feed**
-    - ![Feed](docs/img/feed.png)
-
-- **Tela de perfil (upload)**
-    - ![Perfil](docs/img/perfil.png)
-
----
-
-## Funcionalidades
-
-- Autenticação de usuário (login/logout)
-- Criação de conta com senha criptografada (bcrypt)
-- Feed com posts mais recentes
-- Página de perfil do usuário
-- Upload de imagem e salvamento em `static/fotos_posts`
-- Banco de dados SQLite
+- **Tela de Perfil**
+    - ![Perfil](https://github.com/renancguedes/FakePinterest/blob/main/docs/perfil.png)
 
 ---
 
@@ -56,7 +45,7 @@ No PowerShell, dentro da pasta do projeto:
 
 ```powershell
 python -m venv venv
-./venv/Scripts/Activate.ps1
+./venv/Scripts/activate
 ```
 
 ### 2) Instalar dependências
